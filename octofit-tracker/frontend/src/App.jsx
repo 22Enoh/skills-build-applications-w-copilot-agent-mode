@@ -1,10 +1,25 @@
 import { useEffect, useState } from 'react'
+import { NavLink, Navigate, Route, Routes } from 'react-router-dom'
+import { apiUrl } from './api'
+import Activities from './components/Activities'
+import Leaderboard from './components/Leaderboard'
+import Teams from './components/Teams'
+import Users from './components/Users'
+import Workouts from './components/Workouts'
+
+const navigation = [
+  { to: '/activities', label: 'Activities' },
+  { to: '/leaderboard', label: 'Leaderboard' },
+  { to: '/teams', label: 'Teams' },
+  { to: '/users', label: 'Users' },
+  { to: '/workouts', label: 'Workouts' },
+]
 
 function App() {
   const [services, setServices] = useState({ api: 'Checking', database: 'Checking' })
 
   useEffect(() => {
-    fetch('/api/health')
+    fetch(apiUrl('/api/health'))
       .then((response) => {
         if (!response.ok) throw new Error('API health check failed')
         return response.json()
@@ -14,33 +29,36 @@ function App() {
   }, [])
 
   return (
-    <div className="container py-4">
+    <div className="container py-4 app-shell">
       <header className="d-flex align-items-center gap-3 border-bottom pb-4">
         <img src="/octofitapp-small.png" alt="" width="48" height="48" />
-        <div>
+        <div className="flex-grow-1">
           <p className="small fw-semibold text-uppercase text-secondary mb-1">OctoFit Tracker</p>
           <p className="mb-0">Activity, teams, and progress.</p>
         </div>
+        <div className="text-end">
+          <span className="badge text-bg-light">API {services.api}</span>
+          <span className="badge text-bg-light ms-2">MongoDB {services.database}</span>
+        </div>
       </header>
 
-      <main className="py-5">
-        <h1 className="h2 mb-2">Your fitness workspace</h1>
-        <p className="text-secondary mb-4">Service status</p>
+      <nav className="nav nav-pills gap-2 py-3" aria-label="OctoFit sections">
+        {navigation.map((item) => (
+          <NavLink className="nav-link" key={item.to} to={item.to}>
+            {item.label}
+          </NavLink>
+        ))}
+      </nav>
 
-        <div className="row g-3">
-          <div className="col-sm-6">
-            <section className="border rounded p-3" aria-label="API service status">
-              <h2 className="h6 text-secondary">API</h2>
-              <p className="fs-5 mb-0">{services.api}</p>
-            </section>
-          </div>
-          <div className="col-sm-6">
-            <section className="border rounded p-3" aria-label="MongoDB service status">
-              <h2 className="h6 text-secondary">MongoDB</h2>
-              <p className="fs-5 mb-0">{services.database}</p>
-            </section>
-          </div>
-        </div>
+      <main className="py-5">
+        <Routes>
+          <Route path="/" element={<Navigate to="/activities" replace />} />
+          <Route path="/activities" element={<Activities />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/teams" element={<Teams />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/workouts" element={<Workouts />} />
+        </Routes>
       </main>
     </div>
   )
