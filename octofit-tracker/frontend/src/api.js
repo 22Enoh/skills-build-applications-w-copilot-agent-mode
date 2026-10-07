@@ -21,7 +21,7 @@ function getApiBase() {
     )}`
   }
 
-  return `http://localhost:${apiPort}`
+  return 'http://localhost:8000'
 }
 
 export const apiBase = getApiBase()
