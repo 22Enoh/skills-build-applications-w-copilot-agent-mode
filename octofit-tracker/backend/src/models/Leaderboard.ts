@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-const leaderboardEntrySchema = new Schema(
+const leaderboardSchema = new Schema(
   {
     userEmail: { type: String, required: true },
     points: { type: Number, required: true },
@@ -10,4 +10,4 @@ const leaderboardEntrySchema = new Schema(
   { timestamps: true },
 )
 
-export default model('LeaderboardEntry', leaderboardEntrySchema, 'leaderboard')
+export default model('Leaderboard', leaderboardSchema, 'leaderboard')

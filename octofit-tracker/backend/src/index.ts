@@ -5,7 +5,7 @@ const app = express()
 const port = Number(process.env.PORT ?? 8000)
 
 app.use(express.json())
-app.use('/api', apiRoutes)
+app.use(apiRoutes)
 
 app.use((error: unknown, _request: express.Request, response: express.Response, _next: express.NextFunction) => {
   console.error(error)
